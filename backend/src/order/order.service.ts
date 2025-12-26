@@ -8,7 +8,7 @@ import {
   OrderResponseDto,
   OrderItemResponseDto,
 } from './dto/order.dto';
-import { nanoid } from 'nanoid';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class OrderService {
@@ -41,7 +41,7 @@ export class OrderService {
         row: ticket.row,
         seat: ticket.seat,
         price: ticket.price,
-        id: nanoid(),
+        id: randomUUID(),
       });
     }
 

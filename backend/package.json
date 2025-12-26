@@ -32,7 +32,6 @@
     "debug": "^4.3.5",
     "dotenv": "^16.4.5",
     "mongoose": "^8.20.4",
-    "nanoid": "^5.1.6",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },
