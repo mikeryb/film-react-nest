@@ -6,6 +6,7 @@ import {
   ValidateNested,
   IsNumber,
   Min,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -19,9 +20,11 @@ export class OrderTicketDto {
   @IsString()
   daytime: string;
 
+  @IsOptional()
   @IsString()
   day: string;
 
+  @IsOptional()
   @IsString()
   time: string;
 
