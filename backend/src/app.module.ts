@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import * as path from 'node:path';
 
 import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
+import { ormConfig } from './ormconfig';
 
 @Module({
   imports: [
@@ -13,9 +14,9 @@ import { OrderModule } from './order/order.module';
       isGlobal: true,
       cache: true,
     }),
-    MongooseModule.forRoot(
-      process.env.DATABASE_URL || 'mongodb://localhost:27017/afisha',
-    ),
+
+    TypeOrmModule.forRoot(ormConfig),
+
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public/content/afisha'),
       serveRoot: '/content/afisha',
