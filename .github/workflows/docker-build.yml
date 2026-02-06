@@ -50,7 +50,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/film-frontend:review-2
 
-      # 6. (Опционально) Build & Push Nginx
+      # 6. Build & Push Nginx
       - name: Build and push nginx image
         uses: docker/build-push-action@v5
         with:
