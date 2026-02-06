@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: ghcr.io/mikeryb/film-backend:latest
+    container_name: backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    expose:
+      - "3000"
+    networks:
+      - film-network
+    depends_on:
+      - db
+
+  frontend-builder:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    image: ghcr.io/mikeryb/film-frontend-builder:latest
+    container_name: frontend-builder
+    networks:
+      - film-network
+
+  nginx:
+    build:
+      context: ./nginx
+    image: ghcr.io/mikeryb/film-nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./backend/public/content:/usr/share/nginx/content
+    depends_on:
+      - backend
+      - frontend-builder
+    networks:
+      - film-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - film-network
+
+  pgadmin:
+    image: dpage/pgadmin4:7
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - film-network
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+
+networks:
+  film-network:
+    driver: bridge

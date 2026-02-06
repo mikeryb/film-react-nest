@@ -22,11 +22,11 @@ export class OrderTicketDto {
 
   @IsOptional()
   @IsString()
-  day: string;
+  day?: string;
 
   @IsOptional()
   @IsString()
-  time: string;
+  time?: string;
 
   @IsNumber()
   @Min(1)

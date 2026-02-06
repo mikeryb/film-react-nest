@@ -2,7 +2,7 @@ import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import {
   ORDER_REPOSITORY,
   OrderRepository,
-} from 'src/repository/order.repository';
+} from '../repository/order.repository';
 import {
   OrderPostDto,
   OrderResponseDto,
