@@ -7,8 +7,12 @@ import * as path from 'node:path';
 import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
 import { ormConfig } from './ormconfig';
+import { DevLogger } from './logger/devLogger';
+import { JsonLogger } from './logger/jsonLogger';
+import { TskvLogger } from './logger/TSKVLogger';
 
 @Module({
+  providers: [DevLogger, JsonLogger, TskvLogger],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
