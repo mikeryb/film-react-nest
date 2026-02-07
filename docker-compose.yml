@@ -23,6 +23,7 @@ services:
       - backend
     image: ghcr.io/mikeryb/film-frontend:review-2
     container_name: frontend-builder
+    restart: unless-stopped
     volumes:
     - frontend-dist:/dist
     networks:
@@ -66,8 +67,8 @@ services:
     container_name: pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
       - "8080:80"
     volumes:

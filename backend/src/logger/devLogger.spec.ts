@@ -19,7 +19,7 @@ describe('DevLogger basic output', () => {
     logger.log(message);
 
     const calls = (process.stdout.write as jest.Mock).mock.calls;
-    const containsMessage = calls.some(call => call[0].includes(message));
+    const containsMessage = calls.some((call) => call[0].includes(message));
     expect(containsMessage).toBe(true);
   });
 
@@ -28,7 +28,7 @@ describe('DevLogger basic output', () => {
     logger.warn(message);
 
     const calls = (process.stdout.write as jest.Mock).mock.calls;
-    const containsMessage = calls.some(call => call[0].includes(message));
+    const containsMessage = calls.some((call) => call[0].includes(message));
     expect(containsMessage).toBe(true);
   });
 
@@ -37,7 +37,7 @@ describe('DevLogger basic output', () => {
     logger.error(message);
 
     const calls = (process.stderr.write as jest.Mock).mock.calls;
-    const containsMessage = calls.some(call => call[0].includes(message));
+    const containsMessage = calls.some((call) => call[0].includes(message));
     expect(containsMessage).toBe(true);
   });
 });

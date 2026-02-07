@@ -1,4 +1,4 @@
-import { JsonLogger } from './jsonLogger';
+import { JsonLogger, LogMessage } from './jsonLogger';
 
 describe('JsonLogger format', () => {
   let logger: JsonLogger;
@@ -20,9 +20,9 @@ describe('JsonLogger format', () => {
   function expectJsonStructure(
     jsonStr: string,
     expectedLevel: string,
-    expectedMessage: any,
+    expectedMessage: LogMessage,
     expectedTrace?: string,
-    expectedContext: any[] = [],
+    expectedContext: unknown[] = [],
   ) {
     const obj = JSON.parse(jsonStr);
     expect(obj).toHaveProperty('timestamp');

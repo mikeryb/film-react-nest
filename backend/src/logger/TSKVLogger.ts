@@ -1,8 +1,20 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 
+type TskvValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | TskvValue[]
+  | { [key: string]: TskvValue };
+
+type TskvRecord = Record<string, TskvValue>;
+type LogMessage = TskvValue;
+
 @Injectable()
 export class TskvLogger implements LoggerService {
-  private formatValue(value: any): string {
+  private formatValue(value: TskvValue): string {
     if (value === undefined || value === null) {
       return '';
     }
@@ -14,13 +26,13 @@ export class TskvLogger implements LoggerService {
     return String(value);
   }
 
-  private formatRecord(record: Record<string, any>): string {
+  private formatRecord(record: TskvRecord): string {
     return Object.entries(record)
       .map(([key, value]) => `${key}=${this.formatValue(value)}`)
       .join('\t');
   }
 
-  private write(record: Record<string, any>, error = false) {
+  private write(record: TskvRecord, error = false) {
     const line = this.formatRecord({
       time: new Date().toISOString(),
       pid: process.pid,
@@ -28,10 +40,14 @@ export class TskvLogger implements LoggerService {
       ...record,
     });
 
-    error ? console.error(line) : console.log(line);
+    if (error) {
+      console.error(line);
+    } else {
+      console.log(line);
+    }
   }
 
-  log(message: any, context?: string) {
+  log(message: LogMessage, context?: string) {
     this.write({
       level: 'log',
       msg: message,
@@ -39,7 +55,7 @@ export class TskvLogger implements LoggerService {
     });
   }
 
-  warn(message: any, context?: string) {
+  warn(message: LogMessage, context?: string) {
     this.write({
       level: 'warn',
       msg: message,
@@ -47,7 +63,7 @@ export class TskvLogger implements LoggerService {
     });
   }
 
-  error(message: any, trace?: string, context?: string) {
+  error(message: LogMessage, trace?: string, context?: string) {
     this.write(
       {
         level: 'error',
@@ -59,7 +75,7 @@ export class TskvLogger implements LoggerService {
     );
   }
 
-  debug(message: any, context?: string) {
+  debug(message: LogMessage, context?: string) {
     this.write({
       level: 'debug',
       msg: message,
@@ -67,7 +83,7 @@ export class TskvLogger implements LoggerService {
     });
   }
 
-  verbose(message: any, context?: string) {
+  verbose(message: LogMessage, context?: string) {
     this.write({
       level: 'verbose',
       msg: message,

@@ -26,7 +26,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
-  const logger =  getLogger(app);
+  const logger = getLogger(app);
   app.useLogger(logger);
   app.setGlobalPrefix('api/afisha');
   app.useGlobalPipes(

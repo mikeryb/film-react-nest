@@ -15,7 +15,7 @@ describe('TskvLogger format', () => {
   });
 
   function parseTskv(line: string): Record<string, string> {
-    const entries = line.split('\t').map(pair => pair.split('='));
+    const entries = line.split('\t').map((pair) => pair.split('='));
     const record: Record<string, string> = {};
     for (const [key, value] of entries) {
       record[key] = value;
@@ -23,13 +23,21 @@ describe('TskvLogger format', () => {
     return record;
   }
 
-  function expectBasicFields(record: Record<string, string>, level: string, msg: any, context?: string, trace?: string) {
+  function expectBasicFields(
+    record: Record<string, string>,
+    level: string,
+    msg: string | Record<string, unknown>,
+    context?: string,
+    trace?: string,
+  ) {
     expect(record).toHaveProperty('time');
     expect(new Date(record.time).toISOString()).toBe(record.time);
     expect(Number(record.pid)).toBe(process.pid);
     expect(record.service).toBe('afisha-api');
     expect(record.level).toBe(level);
-    expect(record.msg).toBe(typeof msg === 'string' ? msg : JSON.stringify(msg));
+    expect(record.msg).toBe(
+      typeof msg === 'string' ? msg : JSON.stringify(msg),
+    );
     expect(record.context).toBe(context || '');
     if (trace !== undefined) {
       expect(record.trace).toBe(trace);
