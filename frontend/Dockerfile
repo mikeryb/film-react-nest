@@ -5,4 +5,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-CMD ["sh", "-c", "cp -r dist/* /dist && sleep infinity"]
+
+#production
+FROM alpine AS production
+WORKDIR /dist
+COPY --from=builder /app/dist .

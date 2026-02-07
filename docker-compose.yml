@@ -1,6 +1,4 @@
-version: "3.9"
-
- 
+version: "3.9" 
 
 services:
   backend:
@@ -13,8 +11,6 @@ services:
       - ./backend/.env
     volumes:
       - backend-content:/app/public/content
-    expose:
-      - "3000"
     networks:
       - film-network
     depends_on:
